@@ -1,47 +1,45 @@
+import itertools
 
-dominio = [1, 2, 3]
+# Definición de operadores lógicos
+def conjuncion(p, q):   return p and q
+def disyuncion(p, q):   return p or q
+def condicional(p, q):  return (not p) or q
+def bicondicional(p, q): return p == q
+def negacion(p, q=None): return not p
+def negacion_q(p, q): return not q
+def nand(p, q): return not (p and q)
+def nor(p, q): return not (p or q)
 
+# Diccionario de operadores
+operadores = {
+    "conjuncion": ("P(x) ∧ Q(x)", conjuncion),
+    "disyuncion": ("P(x) ∨ Q(x)", disyuncion),
+    "condicional": ("P(x) → Q(x)", condicional),
+    "bicondicional": ("P(x) ↔ Q(x)", bicondicional),
+    "negacion": ("¬P(x)", negacion),
+    "negacion_q": ("¬Q(x)", negacion_q),
+    "nand": ("¬(P(x) ∧ Q(x))", nand),
+    "nor": ("¬(P(x) ∨ Q(x))", nor)
+}
 
-def P(x):
-    return x % 2 == 0
+# Bucle interactivo
+while True:
+    proposicion = input("\nEscribe la proposición (conjuncion, disyuncion, condicional, bicondicional, negacion, negacion_q, nand, nor) o 'salir' para terminar: ")
 
+    if proposicion == "salir":
+        print("Programa terminado.")
+        break
 
-def forall(predicado, dominio):
-    return all(predicado(x) for x in dominio)
+    if proposicion not in operadores:
+        print("Proposición no válida. Intenta de nuevo.")
+        continue
 
-def exists(predicado, dominio):
-    return any(predicado(x) for x in dominio)
+    nombre, funcion = operadores[proposicion]
+    valores = list(itertools.product([True, False], repeat=2))
 
-
-print("x\tP(x)")
-print("-"*10)
-for x in dominio:
-    print(f"{x}\t{P(x)}")
-
-
-opcion = input("\n¿Quieres transformar 'universal a existencial' o 'existencial a universal'? ")
-
-print("\nArgumentación:")
-
-if opcion == "universal a existencial":
-    
-    neg_universal = not forall(P, dominio)
-    
-    existe_negacion = exists(lambda x: not P(x), dominio)
-
-    print(f"¬(∀x P(x)) = {neg_universal}")
-    print(f"∃x ¬P(x) = {existe_negacion}")
-    print("Por la ley de De Morgan, ¬(∀x P(x)) es equivalente a ∃x ¬P(x).")
-
-elif opcion == "existencial a universal":
-    
-    neg_existencial = not exists(P, dominio)
-    
-    universal_negacion = forall(lambda x: not P(x), dominio)
-
-    print(f"¬(∃x P(x)) = {neg_existencial}")
-    print(f"∀x ¬P(x) = {universal_negacion}")
-    print("Por la ley de De Morgan, ¬(∃x P(x)) es equivalente a ∀x ¬P(x).")
-
-else:
-    print("Opción no válida. Escribe 'universal a existencial' o 'existencial a universal'.")
+    print(f"\nTabla de verdad para {nombre}:")
+    print(f"{'P(x)':<8}{'Q(x)':<8}{'Resultado':<10}")
+    print("-"*30)
+    for p, q in valores:
+        resultado = funcion(p, q)
+        print(f"{str(p):<8}{str(q):<8}{str(resultado):<10}")
