@@ -7,8 +7,8 @@ def condicional(p, q):  return (not p) or q
 def bicondicional(p, q): return p == q
 def negacion(p, q=None): return not p
 def negacion_q(p, q): return not q
-def nand(p, q): return not (p and q)
-def nor(p, q): return not (p or q)
+def disyuncion_excluyente(p, q): return not (p and q)
+def negacion_conjunta(p, q): return not (p or q)
 
 # Diccionario de operadores
 operadores = {
@@ -18,13 +18,13 @@ operadores = {
     "bicondicional": ("P(x) ↔ Q(x)", bicondicional),
     "negacion": ("¬P(x)", negacion),
     "negacion_q": ("¬Q(x)", negacion_q),
-    "nand": ("¬(P(x) ∧ Q(x))", nand),
-    "nor": ("¬(P(x) ∨ Q(x))", nor)
+    "disyuncion_excluyente": ("(P(x) ⊕ Q(x))", disyuncion_excluyente),
+    "negacion_conjunta": ("(P(x) ↓ Q(x))", negacion_conjunta)
 }
 
 # Bucle interactivo
 while True:
-    proposicion = input("\nEscribe la proposición (conjuncion, disyuncion, condicional, bicondicional, negacion, negacion_q, nand, nor) o 'salir' para terminar: ")
+    proposicion = input("\nEscribe la proposición (conjuncion, disyuncion, condicional, bicondicional, negacion, negacion_p ,negacion_q, disyuncion_excluyente, negacion_conjunta) o 'salir' para terminar: ")
 
     if proposicion == "salir":
         print("Programa terminado.")
